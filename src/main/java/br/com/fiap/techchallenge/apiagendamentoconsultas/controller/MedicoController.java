@@ -9,6 +9,7 @@ import br.com.fiap.techchallenge.apiagendamentoconsultas.repository.MedicoReposi
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,8 @@ import java.beans.Transient;
 @RestController
 @RequestMapping("/medico")
 public class MedicoController {
+
+    private final int DEZ_RESULTADOS_POR_PAGINA = 10;
 
     @Autowired
     private MedicoRepository repository;
@@ -34,12 +37,13 @@ public class MedicoController {
 
     @GetMapping
     public ResponseEntity<Page<DadosListagemMedico>> listar(Pageable paginacao) {
-        var page = this.repository.findAll(paginacao).map(DadosListagemMedico::new);
+        var pageAtualizada = PageRequest.of(paginacao.getPageNumber(), this.DEZ_RESULTADOS_POR_PAGINA, paginacao.getSort());
+        var page = this.repository.findAll(pageAtualizada).map(DadosListagemMedico::new);
         return ResponseEntity.ok(page);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DadosDetalhamentoMedico> listarPorId(@PathVariable Long id) {
+    public ResponseEntity<DadosDetalhamentoMedico> buscarPorId(@PathVariable Long id) {
         var medico = this.repository.getReferenceById(id);
         return ResponseEntity.ok(new DadosDetalhamentoMedico(medico));
     }
