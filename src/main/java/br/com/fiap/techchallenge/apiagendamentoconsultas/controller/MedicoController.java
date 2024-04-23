@@ -18,8 +18,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequestMapping("/medico")
 public class MedicoController {
 
-    private final int DEZ_RESULTADOS_POR_PAGINA = 10;
-
     @Autowired
     private MedicoService service;
 
