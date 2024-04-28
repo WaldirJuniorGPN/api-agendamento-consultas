@@ -2,6 +2,7 @@ package br.com.fiap.tech.challenge.api.agendamento.consultas.service.impl;
 
 import br.com.fiap.tech.challenge.api.agendamento.consultas.dto.request.SpecialtyRequest;
 import br.com.fiap.tech.challenge.api.agendamento.consultas.dto.response.SpecialtyPageResponse;
+import br.com.fiap.tech.challenge.api.agendamento.consultas.exception.SchedulingAppointmentsException;
 import br.com.fiap.tech.challenge.api.agendamento.consultas.model.Specialty;
 import br.com.fiap.tech.challenge.api.agendamento.consultas.repository.SpecialtyRepository;
 import br.com.fiap.tech.challenge.api.agendamento.consultas.service.SpecialtyService;
@@ -10,6 +11,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import static br.com.fiap.tech.challenge.api.agendamento.consultas.exception.ErrorCode.SPECIALTY_NOT_FOUND;
 
 @Service
 public class SpecialtyServiceImpl implements SpecialtyService {
@@ -33,7 +36,8 @@ public class SpecialtyServiceImpl implements SpecialtyService {
 
     @Override
     public ResponseEntity<?> update(Long id, SpecialtyRequest request) {
-        var specialty = repository.findById(id).orElseThrow(() -> new RuntimeException("Especialização não encontrada"));
+
+        var specialty = repository.findById(id).orElseThrow(() -> new SchedulingAppointmentsException(SPECIALTY_NOT_FOUND));
         mapper.map(request, specialty);
 
         return ResponseEntity.ok(repository.save(specialty));

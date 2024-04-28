@@ -1,4 +1,4 @@
-package br.com.fiap.tech.challenge.api.agendamento.consultas.config;
+package br.com.fiap.tech.challenge.api.agendamento.consultas.config.mapping;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
