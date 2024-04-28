@@ -1,0 +1,26 @@
+package br.com.fiap.tech.challenge.api.agendamento.consultas.model;
+
+public enum EspecialidadeOld {
+    ACUMPUTURA,
+    ALERGOLOGIA,
+    ANESTESILOGIA,
+    ANGILOGIA,
+    CARDIOLOGIA,
+    CIRURGIA,
+    CLINICA,
+    COLOPROCTOLOGIA,
+    DERMATOLOGIA,
+    ENDROCNOLOGIA,
+    ENDOSCOPIA,
+    GASTROENTEROLOGIA,
+    GENETICA,
+    GERIATRIA,
+    GINECOLOGIA,
+    HEMATOLOGIA,
+    HOMEOPATIA,
+    INFECTOLOGIA,
+    MASTOLOGIA,
+    NEFROLOGIA,
+    NEUROLOGIA,
+    PSIQUIATRIA
+}
