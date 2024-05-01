@@ -1,12 +1,6 @@
 package br.com.fiap.tech.challenge.api.agendamento.consultas.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -14,14 +8,14 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 @Entity
-@Table(name = "assistants")
+@Table(name = "patients")
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class Assistant extends EntityModel {
+public class Patient extends User {
 
     @Serial
-    private static final long serialVersionUID = -8181170115669325138L;
+    private static final long serialVersionUID = -376440141306122084L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,5 +26,4 @@ public class Assistant extends EntityModel {
 
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
-
 }

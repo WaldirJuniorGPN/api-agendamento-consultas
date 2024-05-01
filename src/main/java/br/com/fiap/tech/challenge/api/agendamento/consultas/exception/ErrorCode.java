@@ -6,7 +6,8 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum ErrorCode {
 
-    SPECIALTY_NOT_FOUND("Especialização não encontrada", HttpStatus.NOT_FOUND);
+    SPECIALTY_NOT_FOUND("Especialização não encontrada", HttpStatus.NOT_FOUND),
+    PATIENT_NOT_FOUND("Paciente não encontrado", HttpStatus.NOT_FOUND);
 
     private final String message;
     private final HttpStatus httpStatus;

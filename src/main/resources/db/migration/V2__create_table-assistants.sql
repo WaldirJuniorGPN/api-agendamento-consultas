@@ -18,14 +18,15 @@ CREATE TABLE users (
     name VARCHAR(255),
     password VARCHAR(255),
     email VARCHAR(255),
-    role VARCHAR(255)
+    role VARCHAR(255),
+    cpf VARCHAR(255),
+    phone VARCHAR(255)
 );
 
 CREATE TABLE assistants (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     input_date TIMESTAMP,
     update_date TIMESTAMP,
-    name VARCHAR(255),
     user_id BIGINT,
     address_id BIGINT,
     FOREIGN KEY (user_id) REFERENCES users(id),
