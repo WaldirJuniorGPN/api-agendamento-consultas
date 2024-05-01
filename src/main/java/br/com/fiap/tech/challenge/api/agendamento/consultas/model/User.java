@@ -12,23 +12,29 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "specialties")
+@Table(name = "users")
 @Data
 @NoArgsConstructor
-public class Specialty extends EntityModel{
+@EqualsAndHashCode(callSuper = true)
+public class User extends EntityModel{
 
     @Serial
-    private static final long serialVersionUID = -4301688336333660988L;
+    private static final long serialVersionUID = -1161377881466392329L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
 
-    private String description;
+    @Column(unique = true, nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    private String role;
 
 }

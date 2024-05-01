@@ -1,34 +1,40 @@
 package br.com.fiap.tech.challenge.api.agendamento.consultas.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "specialties")
+@Table(name = "addresses")
 @Data
 @NoArgsConstructor
-public class Specialty extends EntityModel{
+public class Address extends EntityModel {
 
     @Serial
-    private static final long serialVersionUID = -4301688336333660988L;
+    private static final long serialVersionUID = 6731766856184699910L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String name;
+    private String street;
 
-    private String description;
+    private String number;
+
+    private String complement;
+
+    private String neighborhood;
+
+    private String city;
+
+    private String state;
+
+    private String zipCode;
 
 }
