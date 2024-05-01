@@ -9,8 +9,6 @@ public class AssistantResponse {
 
     private Long id;
 
-    private String name;
-
     private UserResponse user;
 
     private AddressResponse address;

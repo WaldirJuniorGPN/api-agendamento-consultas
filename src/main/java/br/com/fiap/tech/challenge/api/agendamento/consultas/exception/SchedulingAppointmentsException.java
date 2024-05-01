@@ -1,8 +1,15 @@
 package br.com.fiap.tech.challenge.api.agendamento.consultas.exception;
 
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+import java.io.Serial;
+
+@Getter
 public class SchedulingAppointmentsException extends RuntimeException {
+
+    @Serial
+    private static final long serialVersionUID = -50956220809772608L;
 
     private final ErrorCode errorCode;
 
@@ -11,16 +18,7 @@ public class SchedulingAppointmentsException extends RuntimeException {
         this.errorCode = errorCode;
     }
 
-    public ErrorCode getErrorCode() {
-        return errorCode;
-    }
-
     public HttpStatus getHttpStatus() {
         return errorCode.getHttpStatus();
     }
-
-    public int getCode() {
-        return errorCode.getCode();
-    }
-
 }

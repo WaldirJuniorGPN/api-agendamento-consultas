@@ -15,4 +15,6 @@ public interface PatientService {
     ResponseEntity<PatientResponse> update(Long id, @Valid PatientRequest request);
 
     void delete(Long id);
+
+    ResponseEntity<PatientResponse> findById(Long id);
 }

@@ -45,13 +45,24 @@ public class PatientServiceImpl implements PatientService {
         var patient = repository.findById(id).orElseThrow(
                 () -> new SchedulingAppointmentsException(ErrorCode.SPECIALTY_NOT_FOUND));
         mapper.map(request, patient);
+        var patientResponse = mapper.map(repository.save(patient), PatientResponse.class);
 
-        return ResponseEntity.ok(mapper.map(patient, PatientResponse.class));
+        return ResponseEntity.ok(patientResponse);
     }
 
     @Override
     public void delete(Long id) {
 
         repository.deleteById(id);
+    }
+
+    @Override
+    public ResponseEntity<PatientResponse> findById(Long id) {
+        var patient = repository.findById(id).orElseThrow(
+                () -> new SchedulingAppointmentsException(ErrorCode.PATIENT_NOT_FOUND)
+        );
+        var patientResponse = mapper.map(patient, PatientResponse.class);
+
+        return ResponseEntity.ok(patientResponse);
     }
 }
