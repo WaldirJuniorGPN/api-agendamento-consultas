@@ -22,8 +22,6 @@ public class Assistant extends BaseEntity {
 
     private String cpf;
 
-    private String name;
-
     @OneToOne(cascade = CascadeType.ALL)
     private User user;
 
