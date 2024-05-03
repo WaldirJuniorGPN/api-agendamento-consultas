@@ -5,11 +5,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class UserResponse {
+public class MedicalInsuranceResponse {
 
+    private Long id;
     private String name;
-
-    private String email;
-
-    private String phone;
+    private String cnpj;
 }

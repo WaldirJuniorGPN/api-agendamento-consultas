@@ -1,6 +1,5 @@
 package br.com.fiap.tech.challenge.api.agendamento.consultas.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Data;
@@ -9,19 +8,17 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "specialties")
+@Table(name = "medical_insurances")
 @Data
 @NoArgsConstructor
-public class Specialty extends BaseEntity {
+@EqualsAndHashCode(callSuper = true)
+public class MedicalInsurance extends BaseEntity {
 
     @Serial
-    private static final long serialVersionUID = -4301688336333660988L;
+    private static final long serialVersionUID = -7997515509608591126L;
 
-    @Column(nullable = false, unique = true)
     private String name;
 
-    private String description;
-
+    private String cnpj;
 }

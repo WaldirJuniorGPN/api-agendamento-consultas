@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class AssistantsPageResponse extends PageResponse{
+public class PatientPageResponse extends PageResponse{
 
-    private List<AssistantResponse> content;
+    private List<PatientResponse> content;
 }

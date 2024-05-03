@@ -6,20 +6,12 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class UserRequest {
+public class MedicalInsuranceRequest {
 
     @NotBlank
     private String name;
 
     @NotBlank
-    private String email;
-
-    @NotBlank
-    private String password;
-
-    @NotBlank
-    private String phone;
-
-    private String role;
+    private String cnpj;
 
 }
