@@ -35,6 +35,10 @@ public class User extends EntityModel{
     @Column(nullable = false)
     private String password;
 
+    private String cpf;
+
+    private String phone;
+
     private String role;
 
 }

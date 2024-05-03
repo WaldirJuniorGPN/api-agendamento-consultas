@@ -5,9 +5,12 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class UserResponse {
+public class PatientResponse {
 
-    private String name;
+    private Long id;
 
-    private String email;
+    private UserResponse user;
+
+    private AddressResponse address;
+
 }
