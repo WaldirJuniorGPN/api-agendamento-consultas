@@ -19,12 +19,12 @@ CREATE TABLE users (
    password VARCHAR(255) NOT NULL ,
    email VARCHAR(255) NOT NULL UNIQUE,
    role VARCHAR(255),
-   cpf VARCHAR(255) NOT NULL UNIQUE,
    phone VARCHAR(255) NOT NULL UNIQUE
 );
 
 CREATE TABLE assistants (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    cpf VARCHAR(255) NOT NULL UNIQUE,
     input_date TIMESTAMP,
     update_date TIMESTAMP,
     user_id BIGINT,

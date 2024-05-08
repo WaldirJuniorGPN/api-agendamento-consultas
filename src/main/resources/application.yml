@@ -14,7 +14,7 @@ spring:
   jpa:
     hibernate:
       dialect: org.hibernate.dialect.MySQLDialect
-      format_sql: false
+
 
   flyway:
     baseline-on-migrate: true

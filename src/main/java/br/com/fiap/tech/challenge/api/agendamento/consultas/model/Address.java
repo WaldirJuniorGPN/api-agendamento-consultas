@@ -1,11 +1,9 @@
 package br.com.fiap.tech.challenge.api.agendamento.consultas.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serial;
@@ -14,14 +12,11 @@ import java.io.Serial;
 @Table(name = "addresses")
 @Data
 @NoArgsConstructor
-public class Address extends EntityModel {
+@EqualsAndHashCode(callSuper = true)
+public class Address extends BaseEntity {
 
     @Serial
     private static final long serialVersionUID = 6731766856184699910L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     private String street;
 

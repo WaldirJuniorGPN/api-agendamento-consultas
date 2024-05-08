@@ -1,6 +1,9 @@
 package br.com.fiap.tech.challenge.api.agendamento.consultas.model;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
@@ -12,10 +15,14 @@ import java.time.LocalDateTime;
 
 @MappedSuperclass
 @Data
-public class EntityModel implements Serializable {
+public class BaseEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 7268496271692023683L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "input_date")
     private LocalDateTime inputDate;

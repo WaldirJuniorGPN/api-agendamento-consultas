@@ -5,14 +5,17 @@ import org.springframework.http.HttpStatus;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Getter
 public enum ErrorCode {
 
-    UNKNOWN_ERROR("Erro desconhecido", HttpStatus.INTERNAL_SERVER_ERROR, TRUE),
-    SPECIALTY_NOT_FOUND("Especialização não encontrada", HttpStatus.NOT_FOUND, FALSE),
-    PATIENT_NOT_FOUND("Paciente não encontrado", HttpStatus.NOT_FOUND, FALSE),
-    ASSISTANT_NOT_FOUND("Auxiliar não encontrado", HttpStatus.NOT_FOUND, FALSE);
+    UNKNOWN_ERROR("Erro desconhecido", INTERNAL_SERVER_ERROR, TRUE),
+    SPECIALTY_NOT_FOUND("Especialização não encontrada", NOT_FOUND, FALSE),
+    PATIENT_NOT_FOUND("Paciente não encontrado", NOT_FOUND, FALSE),
+    ASSISTANT_NOT_FOUND("Auxiliar não encontrado", NOT_FOUND, FALSE),
+    MEDICAL_INSURANCE_NOT_FOUND("Convênio não encontrado", NOT_FOUND, FALSE),;
 
     private final String message;
     private final HttpStatus httpStatus;

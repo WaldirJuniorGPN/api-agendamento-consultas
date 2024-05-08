@@ -3,13 +3,12 @@ package br.com.fiap.tech.challenge.api.agendamento.consultas.dto.response;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
-public class UserResponse {
+public class MedicalInsurancePageResponse extends PageResponse{
 
-    private String name;
+    private List<MedicalInsuranceResponse> content;
 
-    private String email;
-
-    private String phone;
 }

@@ -9,6 +9,8 @@ public class AssistantResponse {
 
     private Long id;
 
+    private String cpf;
+
     private UserResponse user;
 
     private AddressResponse address;

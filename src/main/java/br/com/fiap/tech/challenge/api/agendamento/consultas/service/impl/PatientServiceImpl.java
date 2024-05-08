@@ -52,8 +52,11 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public void delete(Long id) {
+        var patient = repository.findById(id).orElseThrow(
+                () -> new SchedulingAppointmentsException(ErrorCode.PATIENT_NOT_FOUND)
+        );
 
-        repository.deleteById(id);
+        repository.delete(patient);
     }
 
     @Override

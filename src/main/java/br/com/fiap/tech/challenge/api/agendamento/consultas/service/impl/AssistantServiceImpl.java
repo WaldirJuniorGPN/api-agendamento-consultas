@@ -46,7 +46,7 @@ public class AssistantServiceImpl implements AssistantService {
                 () -> new SchedulingAppointmentsException(ErrorCode.ASSISTANT_NOT_FOUND)
         );
         mapper.map(request, assistant);
-        AssistantResponse assistantResponse = mapper.map(repository.save(assistant), AssistantResponse.class);
+        var assistantResponse = mapper.map(repository.save(assistant), AssistantResponse.class);
 
         return ResponseEntity.ok(assistantResponse);
     }
