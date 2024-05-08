@@ -3,18 +3,18 @@ package br.com.fiap.tech.challenge.api.agendamento.consultas.dto.response;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class PatientResponse {
+public class DoctorResponse {
 
     private Long id;
-
-    private LocalDate birthDate;
-
+    private String crm;
+    private String cpf;
     private UserResponse user;
-
     private AddressResponse address;
+    private List<SpecialtyResponse> specialties;
+    private List<MedicalInsuranceResponse> medicalInsurances;
 
 }

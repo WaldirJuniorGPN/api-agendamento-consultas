@@ -5,6 +5,8 @@ import br.com.fiap.tech.challenge.api.agendamento.consultas.dto.response.Medical
 import br.com.fiap.tech.challenge.api.agendamento.consultas.dto.response.MedicalInsuranceResponse;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+
 public interface MedicalInsuranceService {
 
     void create(MedicalInsuranceRequest request);
@@ -16,4 +18,6 @@ public interface MedicalInsuranceService {
     ResponseEntity<MedicalInsuranceResponse> findById(Long id);
 
     void delete(Long id);
+
+    List<MedicalInsuranceResponse> findByDoctorId(Long doctorId);
 }

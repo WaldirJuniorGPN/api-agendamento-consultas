@@ -13,6 +13,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class MedicalInsuranceServiceImpl implements MedicalInsuranceService {
 
@@ -69,6 +71,18 @@ public class MedicalInsuranceServiceImpl implements MedicalInsuranceService {
         );
 
         repository.delete(medicalInsurance);
+    }
+
+    @Override
+    public List<MedicalInsuranceResponse> findByDoctorId(Long doctorId) {
+
+        return repository.findMedicalInsurancesByDoctors_id(doctorId)
+            .orElseThrow(
+                () -> new SchedulingAppointmentsException(ErrorCode.MEDICAL_INSURANCE_NOT_FOUND)
+            )
+            .stream().map(medicalInsurance ->
+                mapper.map(medicalInsurance, MedicalInsuranceResponse.class)
+            ).toList();
     }
 
 }

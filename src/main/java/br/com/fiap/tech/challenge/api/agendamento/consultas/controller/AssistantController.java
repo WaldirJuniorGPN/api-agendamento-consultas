@@ -37,7 +37,8 @@ public class AssistantController {
     }
 
     @GetMapping
-    public ResponseEntity<AssistantsPageResponse> listAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<AssistantsPageResponse> listAll(@RequestParam(defaultValue = "0") int page,
+                                                          @RequestParam(defaultValue = "10") int size) {
 
         return assistantService.listAll(page, size);
     }

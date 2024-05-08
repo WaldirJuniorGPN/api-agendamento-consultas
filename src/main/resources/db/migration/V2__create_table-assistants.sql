@@ -1,4 +1,4 @@
-CREATE TABLE addresses (
+CREATE TABLE IF NOT EXISTS addresses (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     input_date TIMESTAMP,
     update_date TIMESTAMP,
@@ -11,7 +11,7 @@ CREATE TABLE addresses (
     zip_code VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
    id BIGINT PRIMARY KEY AUTO_INCREMENT,
    input_date TIMESTAMP,
    update_date TIMESTAMP,
@@ -22,7 +22,7 @@ CREATE TABLE users (
    phone VARCHAR(255) NOT NULL UNIQUE
 );
 
-CREATE TABLE assistants (
+CREATE TABLE IF NOT EXISTS assistants (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     cpf VARCHAR(255) NOT NULL UNIQUE,
     input_date TIMESTAMP,
