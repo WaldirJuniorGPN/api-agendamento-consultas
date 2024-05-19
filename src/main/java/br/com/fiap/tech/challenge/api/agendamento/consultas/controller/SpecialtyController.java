@@ -50,7 +50,8 @@ public class SpecialtyController {
     }
 
     @GetMapping
-    public ResponseEntity<SpecialtyPageResponse> listAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
+    public ResponseEntity<SpecialtyPageResponse> listAll(@RequestParam(defaultValue = "0") int page,
+                                                         @RequestParam(defaultValue = "10") int size,
                                                          @RequestParam(defaultValue = "name") String sort) {
         return service.listAll(page, size, sort);
     }

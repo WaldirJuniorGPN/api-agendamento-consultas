@@ -13,6 +13,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static br.com.fiap.tech.challenge.api.agendamento.consultas.exception.ErrorCode.SPECIALTY_NOT_FOUND;
 
 @Service
@@ -68,5 +70,17 @@ public class SpecialtyServiceImpl implements SpecialtyService {
         var specialtyResponse = mapper.map(specialty, SpecialtyResponse.class);
 
         return ResponseEntity.ok(specialtyResponse);
+    }
+
+    @Override
+    public List<SpecialtyResponse> findByDoctorId(Long doctorId) {
+
+        return repository.findSpecialtiesByDoctors_id(doctorId)
+            .orElseThrow(
+                () -> new SchedulingAppointmentsException(SPECIALTY_NOT_FOUND)
+            )
+            .stream().map(specialty ->
+                mapper.map(specialty, SpecialtyResponse.class)
+            ).toList();
     }
 }

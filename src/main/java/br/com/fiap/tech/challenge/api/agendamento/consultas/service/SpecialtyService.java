@@ -6,6 +6,8 @@ import br.com.fiap.tech.challenge.api.agendamento.consultas.dto.response.Special
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+
 public interface SpecialtyService {
 
     void create(@Valid SpecialtyRequest request);
@@ -17,4 +19,6 @@ public interface SpecialtyService {
     void delete(Long id);
 
     ResponseEntity<SpecialtyResponse> findById(Long id);
+
+    List<SpecialtyResponse> findByDoctorId(Long id);
 }

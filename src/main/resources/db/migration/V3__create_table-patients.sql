@@ -1,4 +1,4 @@
-CREATE TABLE patients (
+CREATE TABLE IF NOT EXISTS patients (
       id BIGINT PRIMARY KEY AUTO_INCREMENT,
       input_date TIMESTAMP,
       update_date TIMESTAMP,

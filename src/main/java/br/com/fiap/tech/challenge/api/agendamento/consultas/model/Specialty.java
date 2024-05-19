@@ -2,12 +2,15 @@ package br.com.fiap.tech.challenge.api.agendamento.consultas.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serial;
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -23,5 +26,8 @@ public class Specialty extends BaseEntity {
     private String name;
 
     private String description;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "specialties")
+    private List<Doctor> doctors;
 
 }
