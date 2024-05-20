@@ -30,4 +30,8 @@ public class Patient extends BaseEntity {
 
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
+
+    public Patient(Long id) {
+        super.setId(id);
+    }
 }

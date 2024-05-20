@@ -25,7 +25,7 @@ public class ScheduleMapper implements TypeMapConfiguration {
             schedule.setEndWorkingHours(LocalTime.parse(request.getEndWorkingHours()));
             schedule.setStartLunchHours(LocalTime.parse(request.getStartLunchHours()));
             schedule.setEndLunchHours(LocalTime.parse(request.getEndLunchHours()));
-            schedule.setWorkingDays(request.getWorkingDays().getDescription());
+            schedule.setWorkingDays(request.getWorkingDays());
 
             return schedule;
         };

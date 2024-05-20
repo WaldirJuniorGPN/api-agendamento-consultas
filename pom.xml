@@ -11,10 +11,10 @@
 	</parent>
 
 	<groupId>br.com.fiap.techchallenge</groupId>
-	<artifactId>api-agendamento-consultas</artifactId>
+	<artifactId>api-scheduling-medical-appointments</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>api-agendamento-consultas</name>
-	<description>Projeto para automoção no processo de agendamento de consultas</description>
+	<name>api-scheduling-medical-appointments</name>
+	<description>Projeto para automação no processo de agendamento de consultas</description>
 
 	<properties>
 		<java.version>17</java.version>

@@ -9,8 +9,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class MedicalInsurancePageResponse extends PageResponse{
+public class MedicalAppointmentPageResponse extends PageResponse{
 
-    private List<MedicalInsuranceResponse> content;
+    private List<MedicalAppointmentResponse> content;
 
 }

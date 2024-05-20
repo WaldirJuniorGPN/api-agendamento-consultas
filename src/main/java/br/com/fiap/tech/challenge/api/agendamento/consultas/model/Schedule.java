@@ -2,6 +2,7 @@ package br.com.fiap.tech.challenge.api.agendamento.consultas.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -11,6 +12,8 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.time.LocalTime;
+
+import static jakarta.persistence.EnumType.STRING;
 
 @Entity
 @Table(name = "schedules")
@@ -22,8 +25,9 @@ public class Schedule extends BaseEntity {
     @Serial
     private static final long serialVersionUID = -8831890923115702264L;
 
+    @Enumerated(STRING)
     @Column(name = "working_days")
-    private String workingDays;
+    private WorkingDay workingDays;
 
     @Column(name = "start_working_hours")
     private LocalTime startWorkingHours;

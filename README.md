@@ -1,7 +1,7 @@
 # Sistema de Agendamento de Consultas Médicas
 
 ## Sobre o Projeto
-Este projeto é uma API RESTful desenvolvida com Spring Boot para gerenciar o agendamento de consultas médicas. A aplicação conecta clientes a médicos com base em suas especialidades e gerencia todo o ciclo de agendamento, incluindo alterações e cancelamentos. Além disso, a API é responsável por enviar notificações para confirmar consultas e gerenciar o processo de pagamento.
+Este projeto é uma API RESTful desenvolvida com Spring Boot para gerenciar o agendamento de consultas médicas. A aplicação conecta clientes a médicos com base em suas especialidades e gerencia todo o ciclo de agendamento, incluindo alterações e cancelamentos.
 
 ## Funcionalidades
 - **Agendamento de Consultas**: Permite que clientes agendem consultas com médicos especialistas.

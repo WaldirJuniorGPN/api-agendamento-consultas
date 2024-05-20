@@ -23,11 +23,11 @@ public class ScheduleResponseMapping implements TypeMapConfiguration {
             var scheduleResponse = new ScheduleResponse();
 
             scheduleResponse.setId(source.getId());
-            scheduleResponse.setWorkingDays(source.getWorkingDays());
-            scheduleResponse.setStartWorkingHours(source.getStartWorkingHours().toString());
-            scheduleResponse.setEndWorkingHours(source.getEndWorkingHours().toString());
-            scheduleResponse.setStartLunchHours(source.getStartLunchHours().toString());
-            scheduleResponse.setEndLunchHours(source.getEndLunchHours().toString());
+            scheduleResponse.setWorkingDays(source.getWorkingDays().getDescription());
+            scheduleResponse.setStartWorkingHours(source.getStartWorkingHours() != null ? source.getStartWorkingHours().toString() : null);
+            scheduleResponse.setEndWorkingHours(source.getEndWorkingHours() != null ? source.getEndWorkingHours().toString() : null);
+            scheduleResponse.setStartLunchHours(source.getStartLunchHours() != null ? source.getStartLunchHours().toString() : null);
+            scheduleResponse.setEndLunchHours(source.getEndLunchHours() != null ? source.getEndLunchHours().toString() : null);
 
             return scheduleResponse;
         };
