@@ -1,21 +1,21 @@
 package br.com.fiap.tech.challenge.api.scheduling.medical.appointments.service.impl;
 
-import br.com.fiap.tech.challenge.api.scheduling.medical.appointments.dto.request.MedicalReportRequest;
 import br.com.fiap.tech.challenge.api.scheduling.medical.appointments.dto.request.MedicalAppointmentRequest;
+import br.com.fiap.tech.challenge.api.scheduling.medical.appointments.dto.request.MedicalReportRequest;
 import br.com.fiap.tech.challenge.api.scheduling.medical.appointments.dto.response.MedicalAppointmentPageResponse;
 import br.com.fiap.tech.challenge.api.scheduling.medical.appointments.dto.response.MedicalAppointmentResponse;
 import br.com.fiap.tech.challenge.api.scheduling.medical.appointments.dto.response.ScheduleResponse;
+import br.com.fiap.tech.challenge.api.scheduling.medical.appointments.exception.ErrorCode;
 import br.com.fiap.tech.challenge.api.scheduling.medical.appointments.exception.SchedulingAppointmentsException;
-import br.com.fiap.tech.challenge.api.scheduling.medical.appointments.model.Doctor;
-import br.com.fiap.tech.challenge.api.scheduling.medical.appointments.model.Patient;
 import br.com.fiap.tech.challenge.api.scheduling.medical.appointments.model.MedicalAppointment;
 import br.com.fiap.tech.challenge.api.scheduling.medical.appointments.model.MedicalAppointmentStatus;
 import br.com.fiap.tech.challenge.api.scheduling.medical.appointments.repository.MedicalAppointmentRepository;
 import br.com.fiap.tech.challenge.api.scheduling.medical.appointments.service.DoctorService;
-import br.com.fiap.tech.challenge.api.scheduling.medical.appointments.service.PatientService;
 import br.com.fiap.tech.challenge.api.scheduling.medical.appointments.service.MedicalAppointmentService;
+import br.com.fiap.tech.challenge.api.scheduling.medical.appointments.service.NotificationService;
+import br.com.fiap.tech.challenge.api.scheduling.medical.appointments.service.PatientService;
+import br.com.fiap.tech.challenge.api.scheduling.medical.appointments.service.PaymentService;
 import br.com.fiap.tech.challenge.api.scheduling.medical.appointments.service.ScheduleService;
-import br.com.fiap.tech.challenge.api.scheduling.medical.appointments.exception.ErrorCode;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +25,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+import static br.com.fiap.tech.challenge.api.scheduling.medical.appointments.exception.ErrorCode.INVALID_SCHEDULE_HOUR;
+import static br.com.fiap.tech.challenge.api.scheduling.medical.appointments.exception.ErrorCode.SCHEDULE_MEDICAL_APPOINTMENT_ALREADY_EXISTS;
+import static br.com.fiap.tech.challenge.api.scheduling.medical.appointments.model.MedicalAppointmentStatus.CANCELED;
+import static br.com.fiap.tech.challenge.api.scheduling.medical.appointments.model.MedicalAppointmentStatus.SCHEDULED;
 import static java.time.LocalDate.now;
 import static java.time.LocalTime.parse;
 import static java.util.Objects.nonNull;
@@ -42,32 +46,34 @@ public class MedicalAppointmentServiceImpl implements MedicalAppointmentService 
 
     private final ScheduleService scheduleService;
 
+    private final NotificationService notificationService;
+
+    private final PaymentService paymentService;
+
     private final ModelMapper mapper;
 
-    public MedicalAppointmentServiceImpl(MedicalAppointmentRepository medicalAppointmentRepository, DoctorService doctorService, PatientService patientService, ScheduleService scheduleService, ModelMapper mapper) {
+    public MedicalAppointmentServiceImpl(MedicalAppointmentRepository medicalAppointmentRepository, DoctorService doctorService, PatientService patientService, ScheduleService scheduleService, NotificationService notificationService, PaymentService paymentService, ModelMapper mapper) {
         this.medicalAppointmentRepository = medicalAppointmentRepository;
         this.doctorService = doctorService;
         this.patientService = patientService;
         this.scheduleService = scheduleService;
+        this.notificationService = notificationService;
+        this.paymentService = paymentService;
         this.mapper = mapper;
     }
 
     @Override
     public void create(MedicalAppointmentRequest request) {
         if (parse(request.getStartHour()).isBefore(LocalTime.now())) {
-            throw new SchedulingAppointmentsException(ErrorCode.INVALID_SCHEDULE_HOUR);
+            throw new SchedulingAppointmentsException(INVALID_SCHEDULE_HOUR);
         }
         validateRequest(request);
 
-        var medicalAppointment = new MedicalAppointment();
-        medicalAppointment.setDate(request.getDate());
-        medicalAppointment.setStatus(MedicalAppointmentStatus.SCHEDULED);
-        medicalAppointment.setStartHour(request.getStartHour());
-        medicalAppointment.setDoctor(new Doctor(request.getDoctorId()));
-        medicalAppointment.setPatient(new Patient(request.getPatientId()));
+        var medicalAppointment = mapper.map(request, MedicalAppointment.class);
+        medicalAppointment.setStatus(SCHEDULED);
 
         medicalAppointmentRepository.save(medicalAppointment);
-        sendNotification();
+        notificationService.send();
     }
 
     @Override
@@ -77,7 +83,7 @@ public class MedicalAppointmentServiceImpl implements MedicalAppointmentService 
             int size) {
 
         var pageable = PageRequest.of(page, size);
-        var medicalAppointments = medicalAppointmentRepository.findByStatus(status.name(), pageable);
+        var medicalAppointments = medicalAppointmentRepository.findByStatus(status, pageable);
 
         return ResponseEntity.ok(mapper.map(medicalAppointments, MedicalAppointmentPageResponse.class));
     }
@@ -91,10 +97,10 @@ public class MedicalAppointmentServiceImpl implements MedicalAppointmentService 
             throw new SchedulingAppointmentsException(ErrorCode.NOT_POSSIBLE_TO_CANCEL_APPOINTMENT);
         }
 
-        medicalAppointment.setStatus(MedicalAppointmentStatus.CANCELED);
+        medicalAppointment.setStatus(CANCELED);
         medicalAppointmentRepository.save(medicalAppointment);
-        sendNotification();
-        payment();
+        notificationService.send();
+        paymentService.process();
     }
 
     @Override
@@ -109,10 +115,10 @@ public class MedicalAppointmentServiceImpl implements MedicalAppointmentService 
         validateRequest(request);
 
         mapper.map(request, medicalAppointment);
-        medicalAppointment.setStatus(MedicalAppointmentStatus.SCHEDULED);
+        medicalAppointment.setStatus(SCHEDULED);
         medicalAppointmentRepository.save(medicalAppointment);
 
-        sendNotification();
+        notificationService.send();
 
         return ResponseEntity.ok(mapper.map(medicalAppointment, MedicalAppointmentResponse.class));
     }
@@ -125,7 +131,7 @@ public class MedicalAppointmentServiceImpl implements MedicalAppointmentService 
         medicalAppointment.setStatus(MedicalAppointmentStatus.CONFIRMED);
 
         medicalAppointmentRepository.save(medicalAppointment);
-        payment();
+        paymentService.process();
     }
 
     @Override
@@ -150,7 +156,7 @@ public class MedicalAppointmentServiceImpl implements MedicalAppointmentService 
     @Override
     public ResponseEntity<List<MedicalAppointmentResponse>> findByDoctorAndStatusIsNot(Long doctorId, MedicalAppointmentStatus medicalAppointmentStatus) {
 
-        return ResponseEntity.ok(medicalAppointmentRepository.findByDoctorIdAndStatusIsNotAndDateIsAfter(doctorId, medicalAppointmentStatus.name(), YESTERDAY)
+        return ResponseEntity.ok(medicalAppointmentRepository.findByDoctorIdAndStatusIsNotAndDateIsAfter(doctorId, medicalAppointmentStatus, YESTERDAY)
                 .orElseThrow(() -> new SchedulingAppointmentsException(ErrorCode.MEDICAL_APPOINTMENT_NOT_FOUND))
                 .stream().map(medicalAppointment -> mapper.map(medicalAppointment, MedicalAppointmentResponse.class)).toList());
     }
@@ -174,20 +180,20 @@ public class MedicalAppointmentServiceImpl implements MedicalAppointmentService 
         scheduleResponses.forEach(scheduleResponse -> {
             if(parse(request.getStartHour()).isBefore(parse(scheduleResponse.getStartWorkingHours()))) {
 
-                throw new SchedulingAppointmentsException(ErrorCode.INVALID_SCHEDULE_HOUR);
+                throw new SchedulingAppointmentsException(INVALID_SCHEDULE_HOUR);
             }
 
             if (nonNull(scheduleResponse.getStartLunchHours()) && nonNull(scheduleResponse.getEndLunchHours())
                     && parse(request.getStartHour()).isAfter(parse(scheduleResponse.getStartLunchHours()))
                     && parse(request.getStartHour()).isBefore(parse(scheduleResponse.getEndLunchHours()))) {
 
-                throw new SchedulingAppointmentsException(ErrorCode.INVALID_SCHEDULE_HOUR);
+                throw new SchedulingAppointmentsException(INVALID_SCHEDULE_HOUR);
             }
 
 
             if (parse(request.getStartHour()).isAfter(parse(scheduleResponse.getEndWorkingHours()))) {
 
-                throw new SchedulingAppointmentsException(ErrorCode.INVALID_SCHEDULE_HOUR);
+                throw new SchedulingAppointmentsException(INVALID_SCHEDULE_HOUR);
             }
 
         });
@@ -195,8 +201,8 @@ public class MedicalAppointmentServiceImpl implements MedicalAppointmentService 
 
     private void validateMedicalAppointmentExists(MedicalAppointmentRequest request) {
         medicalAppointmentRepository.findByDoctorIdAndDateAndStartHourAndStatusIsNot(
-                request.getDoctorId(), request.getDate(), request.getStartHour(), MedicalAppointmentStatus.CANCELED.name()).ifPresent(schedule -> {
-            throw new SchedulingAppointmentsException(ErrorCode.SCHEDULE_MEDICAL_APPOINTMENT_ALREADY_EXISTS);
+                request.getDoctorId(), request.getDate(), request.getStartHour(), CANCELED).ifPresent(schedule -> {
+            throw new SchedulingAppointmentsException(SCHEDULE_MEDICAL_APPOINTMENT_ALREADY_EXISTS);
         });
     }
 
@@ -208,18 +214,9 @@ public class MedicalAppointmentServiceImpl implements MedicalAppointmentService 
         doctorService.findById(request.getDoctorId()).getBody();
     }
 
-    private static void validateDay(MedicalAppointmentRequest request) {
+    private void validateDay(MedicalAppointmentRequest request) {
         if (now().isAfter(request.getDate())) {
             throw new SchedulingAppointmentsException(ErrorCode.INVALID_SCHEDULE_DAY);
         }
-    }
-
-
-    private void sendNotification() {
-        System.out.println("Notificação enviada com sucesso!");
-    }
-
-    private void payment() {
-        System.out.println("Pagamento realizado com sucesso!");
     }
 }
